@@ -59,10 +59,17 @@ io.on('connection', (socket) => {
                     }
                 });
                 const shell = process.platform === 'win32' ? 'cmd.exe' : 'bash';
-                child = spawn(shell, [], {
-                    cwd: folderPath, // Set working directory
-                    env: process.env,
-                });
+                try{
+                    console.log(folderPath)
+                    console.log(process.env)
+                    child = spawn(shell, [], {
+                        cwd: folderPath, // Set working directory
+                        env: process.env,
+                    });
+                }
+                catch(err){
+                    console.log(err)
+                }
                 activeroom.set(room,child)
                 
                 console.log(`User ${socket.id} joined room: ${room}`);
@@ -82,6 +89,24 @@ io.on('connection', (socket) => {
             
             child=activeroom.get(room)
         }
+        // terminal part
+        // Send terminal output to the room
+        try{
+            console.log("terminal part 2")
+            child.stdout.on('data', (data) => {
+                console.log(data.toString())
+                io.to(room).emit('output', data.toString());
+            });
+    
+            child.stderr.on('data', (data) => {
+                console.log(data.toString())
+                io.to(room).emit('output', data.toString());
+            });
+        }
+        catch(a){
+            console.log(a)
+        }
+        
         setTimeout(()=>{
             fs.readFile(path.join(folderPath,'p.py'),'utf-8',(err,data)=>{
                 if(err){
@@ -141,27 +166,11 @@ io.on('connection', (socket) => {
 
 
 
-
-
-        // terminal part
-        // Send terminal output to the room
-        try{
-            child.stdout.on('data', (data) => {
-                console.log(data.toString())
-                io.to(room).emit('output', data.toString());
-            });
-    
-            child.stderr.on('data', (data) => {
-                console.log(data.toString())
-                io.to(room).emit('output', data.toString());
-            });
-        }
-        catch(a){}
-
         // Handle input from the client
         let inputBuffer = ''; // To store the current input
 
         socket.on('input', (input) => {
+            
             if (input === '\x7f') { // Handle backspace
                 if (inputBuffer.length > 0) {
                 inputBuffer = inputBuffer.slice(0, -1); // Remove the last character from the buffer
@@ -175,6 +184,7 @@ io.on('connection', (socket) => {
                 child.stdin.write(inputBuffer); // Send the entire buffer as input
                 inputBuffer = ''; // Clear the buffer after sending
             }
+            console.log("terminal part 1")
         });
 
         // Handle user disconnect
