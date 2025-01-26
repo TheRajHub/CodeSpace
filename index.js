@@ -62,9 +62,10 @@ io.on('connection', (socket) => {
                 try{
                     console.log(folderPath)
                     console.log(process.env)
-                    child = spawn(shell, [], {
-                        cwd: folderPath, // Set working directory
+                    child = spawn(shell, ['-i'], {
+                        cwd: folderPath,
                         env: process.env,
+                        stdio: 'pipe',
                     });
                 }
                 catch(err){
