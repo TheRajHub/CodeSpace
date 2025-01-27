@@ -14,8 +14,8 @@ A real-time platform for collaborative coding. Users can join rooms, edit code, 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/collaborative-coding-environment.git
-   cd collaborative-coding-environment
+   git clone https://github.com/TheRajHub/CodeSpace.git
+   cd CodeSpace
    ```
 
 2. Install dependencies:
