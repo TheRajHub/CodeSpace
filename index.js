@@ -187,6 +187,21 @@ io.on('connection', (socket) => {
             }
             console.log("terminal part 1")
         });
+        try{
+            child.on('exit', () => {
+                fs.rm(folderPath, { recursive: true, force: true }, (err) => {
+                    if (err) {
+                        console.error('Error deleting the folder:', err);
+                    } else {
+                        console.log('Folder deleted successfully!');
+                    }
+                });
+            });
+        }
+        catch(err){
+            console.error(err)
+        }
+
 
         // Handle user disconnect
         socket.on('disconnect', () => {
@@ -199,17 +214,12 @@ io.on('connection', (socket) => {
             console.log(roomMembers)
             io.to(room).emit('user',roomMembers)
             if(roomMembers.length<=0){
-                if (child) {
-                    child.kill();
-                    child.on('exit', () => {
-                        fs.rm(folderPath, { recursive: true, force: true }, (err) => {
-                            if (err) {
-                                console.error('Error deleting the folder:', err);
-                            } else {
-                                console.log('Folder deleted successfully!');
-                            }
-                        });
-                    });
+                console.log("Room is empty")
+                if (child.kill()) {
+                    console.log("Child killed")
+                    
+                }else{
+                    console.log("Child is undifined")
                 }
             }
             
