@@ -2,7 +2,7 @@
 
 # CodeSpace
 
-A real-time platform for collaborative coding. Users can join rooms, edit code, run commands in a virtual terminal, and interact with each other. And here is the frontend part of the code: <a href="https://github.com/TheRajHub/CodeSpace-Fontend.git">Frontend</a>
+A real-time platform for collaborative coding. Users can join rooms, edit code in python, run commands in a virtual terminal, and interact with each other. And here is the frontend part of the code: <a href="https://github.com/TheRajHub/CodeSpace-Fontend.git">Frontend</a>
 
 ## Features
 - **Room-based collaboration**: Users join rooms to share a workspace.
