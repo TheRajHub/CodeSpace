@@ -189,6 +189,7 @@ io.on('connection', (socket) => {
         });
         try{
             child.on('exit', () => {
+                console.log("deleting file")
                 fs.rm(folderPath, { recursive: true, force: true }, (err) => {
                     if (err) {
                         console.error('Error deleting the folder:', err);
@@ -196,6 +197,7 @@ io.on('connection', (socket) => {
                         console.log('Folder deleted successfully!');
                     }
                 });
+                console.log("done")
             });
         }
         catch(err){
@@ -215,7 +217,7 @@ io.on('connection', (socket) => {
             io.to(room).emit('user',roomMembers)
             if(roomMembers.length<=0){
                 console.log("Room is empty")
-                if (child.kill()) {
+                if (child.kill('SIGKILL')) {
                     console.log("Child killed")
                     
                 }else{
