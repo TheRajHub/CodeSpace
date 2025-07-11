@@ -229,6 +229,9 @@ io.on('connection', (socket) => {
     });
 });
 
+server.get("/on",(req,res)=>{res.send("Online")});
+
+
 server.listen(process.env.PORT, () => {
     console.log('Server running on http://localhost:'+process.env.PORT); 
 }); 
